@@ -150,6 +150,11 @@ docker build -t arenalyahya/html-interface:latest .
 
      
 
+## Resources:
+* https://www.dailysmarty.com/posts/steps-for-deploying-a-static-html-site-with-docker-and-nginx
+* https://github.com/jupyter/docker-stacks/issues/506
+* https://stackoverflow.com/questions/66063686/set-jupyter-lab-password-encrypted-with-sha-256
+
 
       
 
