@@ -43,10 +43,12 @@
     docker push gcr.io/<PROJECT_ID>/bitnami/spark:latest
     ```
 
-6. Create a Kubernetes cluster:
+6. Create a Kubernetes cluster using the following command and check the cluster existance by going to to Kubernetes Engine >> Clusters:
 ```
-gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zone us-central1-a --cluster-version latest projectkubernetescluster
+gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zone us-central1-a --cluster-version latest projec1kubernetescluster2 
 ```
+![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/cluster.png)
+
 
 7. Deploy the images to the cluster:
     * Jupyter: 
