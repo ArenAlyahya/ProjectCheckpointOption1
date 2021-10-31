@@ -14,7 +14,10 @@
 2. Enable GKE
 3. Enable container registry. 
 4. Open Cloud shell
-5. download Jupiter, Apache hadoop, Spark and  Sonar Qube and Sonar Scanner images and store it in container registry. Note that depending on the project ID, replace <PROJECT_ID> in the following command to the original ID.
+5. download Jupiter, Apache hadoop, Spark and  Sonar Qube and Sonar Scanner images and store it in container registry. 
+   * Note that depending on the project ID, replace <PROJECT_ID> in the following command to the original ID.
+    ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/ProjectID.png)
+    
     * Jupyter:
     ```
     docker pull jupyter/scipy-notebook:latest
@@ -89,14 +92,23 @@ gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zo
   args: ["--NotebookApp.password='sha1:4e9c0a22901f:d54fb752d93d1ca5d2916d46f8758f43587eecaf'"]
   ```
   * This will allow us to log in by using the password ‘root’. 
-9. Test all the servieses:
-10. Take the URL from every webpage URL links and hard code the index.html program.
-![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/HtmlCode.png)
-11. build the image
+9. Test all the sevices by selecting the linkes as shown on the screenshot below. Save all the URLs for each sevice as we are going to use them in the next step:
+![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/services.png)
+
+10. Take the the saved URLs links and hard code them in index.html program.
+    ```
+	<a href='http://104.154.54.98:50070/dfshealth.html#tab-overview'><button>Apache Hadoop</button></a>	
+	<a href='http://35.239.49.176:8080'><button>Apache Spark</button></a>	
+	<a href='http://34.68.157.225:8888/login'><button>Jupyter Notbook</button></a>	
+	<a href='http://34.134.78.251:9000/about'><button>SonarQube and SonarScanner</button></a>   
+  * Edit the HTML button that redirects to services page. 
+![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/Interface2.png)
+
+11. build the image note that you will have to change the 'arenalyahya' to usre user ID.
 ```
 docker build -t arenalyahya/html-interface:latest .
 ```
-12. push it in Docker Hub
+12. Push it in Docker Hub
 ```
  docker push  arenalyahya/html-interface:latest   
 ```
