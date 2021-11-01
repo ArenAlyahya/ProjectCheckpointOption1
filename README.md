@@ -10,11 +10,11 @@
 
 ## Steps  to run your Docker images on Kubernetes Engine:
 
-1. create a project.
-2. Enable GKE
+1. Create a project.
+2. Enable GKE.
 3. Enable container registry. 
-4. Open Cloud shell
-5. download Jupiter, Apache hadoop, Spark and  Sonar Qube and Sonar Scanner images and store it in container registry. 
+4. Open Cloud shell.
+5. Download Jupiter, Apache hadoop, Spark and  Sonar Qube and Sonar Scanner images and store it in container registry. 
    * Note that depending on the project ID, replace <PROJECT_ID> in the following command to the original ID.
     ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/ProjectID.png)
     
@@ -68,7 +68,7 @@ gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zo
       * Fill the the port field with 8888 and target port with 8888 and make sure that the option is load balencer. Then select expose:
        ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/5.png)
        * repeat the directions in step 7 for all the other images where the valuse 
-         |Microsrvies| File location | Application name |	port | Target port|
+         |Microsrvies| File location | Application name | port | Target port|
          |-----------|---------------|------------------|------|------------|
          |Jupiter| gcr.io/project1-327717/jupyter/scipy-notebook|jupiter|8888|8888|
          |Apachi Hadoop|gcr.io/project1-327717/harisekhon/hadoop|hadoop|50070|50070|
@@ -95,7 +95,7 @@ gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zo
 9. Test all the sevices by selecting the linkes as shown on the screenshot below. Save all the URLs for each sevice as we are going to use them in the next step:
 ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/services.png)
 
-10. Take the the saved URLs links and hard code them in index.html program.
+10.Open the intrface image folder. Open  index.html and take the the saved URLs links and hard code them in index.html program as shown below(the folloing is just an example).
     ```
 	<a href='http://104.154.54.98:50070/dfshealth.html#tab-overview'><button>Apache Hadoop</button></a>	
 	<a href='http://35.239.49.176:8080'><button>Apache Spark</button></a>	
@@ -113,12 +113,12 @@ docker build -t arenalyahya/html-interface:latest .
  docker push  arenalyahya/html-interface:latest   
 ```
 
-13. download Jupiter, Apache hadoop, Spark and  Sonar Qube and Sonar Scanner images and store it in container registry. Note that depending on the project ID, replace <PROJECT_ID> in the following command to the original ID.
+13. download html-interface,it in container registry. Note that depending on the project ID, replace <PROJECT_ID> in the following command to the original ID.
     ```
     docker pull arenalyahya/html-interface:latest
     docker tag jupyter/scipy-notebook gcr.io/<PROJECT_ID>/arenalyahya/html-interface:latest
     docker push gcr.io/<PROJECT_ID>/arenalyahya/html-interface:latest
-   
+ 
     ```
 14. Deploy the images to the cluster by repeating the directions in step 7 for this image by using the info in the following table:  
   
@@ -126,10 +126,10 @@ docker build -t arenalyahya/html-interface:latest .
   |-----------|---------------|------------------|-------|------------|
   |Interface|gcr.io/project1-327717/arenalyahya/html-interface|htmlinterface|80|80|
          
-15. Open the interface image by going to serveis and pressing the IP:port for the Interface serves.
+15. Open the interface image by going to service and pressing the IP:port for the Interface serves.
 ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/Interface.png)
 
-16. Open the linkes for all the other servese:
+16. Open the linkes for all the other service:
     * Jupyter:
     
       * Enter the password 'root'
