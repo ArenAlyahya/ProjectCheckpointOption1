@@ -176,7 +176,7 @@ docker build -t arenalyahya/html-interface:latest .
 13. download html-interface,it in container registry. Note that depending on the project ID, replace <PROJECT_ID> in the following command to the original ID.
     ```
     docker pull arenalyahya/html-interface:latest
-    docker tag jupyter/scipy-notebook gcr.io/<PROJECT_ID>/arenalyahya/html-interface:latest
+    docker tag arenalyahya/html-interface gcr.io/<PROJECT_ID>/arenalyahya/html-interface:latest
     docker push gcr.io/<PROJECT_ID>/arenalyahya/html-interface:latest
  
     ```
