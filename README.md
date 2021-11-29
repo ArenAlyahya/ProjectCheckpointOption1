@@ -1,6 +1,6 @@
 # Microservices
 
-## youtub:
+## youtube:
 
 https://youtu.be/CTX8tXGwPZs
 
