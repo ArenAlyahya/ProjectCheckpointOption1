@@ -81,12 +81,9 @@ gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zo
          |Jupiter| gcr.io/project1-327717/jupyter/scipy-notebook|jupiter|8888|8888|
          |spark|gcr.io/project1-327717/bitnami/spark|spark|8080|8080|
          |Sonar Qube and Sonar Scanner|gcr.io/project1-327717/petronetto/sonarqube-alpine|sonar|9000|9000|
-         |Apachi Hadoop Namenode|gcr.io/project1-327717/bde2020/hadoop-namenode|hadoop-namenode|50070|50070|
         
          
-        * At the end, you will able to see all the imeges fully deployed and have services. -->change
-        ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/6.png)
-
+      
         
 8. Enable using passwords in Jupyter rather than tokens to overcome the problem of generated random tokens. We have to make a constant password that will allow use it all the time. 
   * Go to workloads in Kubernetes Engine.
@@ -100,13 +97,39 @@ gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zo
   command: ["start-notebook.sh"]
   args: ["--NotebookApp.password='sha1:4e9c0a22901f:d54fb752d93d1ca5d2916d46f8758f43587eecaf'"]
   ```
-  * This will allow us to log in by using the password ‘root’. 
+  * This will allow us to log-in by using the password ‘root’. 
  
+ 9. Deploy Apachi Hadoop Namenode just like step 7, but be sure to add the following environment variables, and then expose the Hadoop Namenode service using the following table:
+   
+   ```
+  CLUSTER_NAME: test
+  CORE_CONF_fs_defaultFS: hdfs://namenode:9000
+  CORE_CONF_hadoop_http_staticuser_user: root
+  CORE_CONF_hadoop_proxyuser_hue_groups: '*'
+  CORE_CONF_hadoop_proxyuser_hue_hosts: '*'
+  CORE_CONF_io_compression_codecs: org.apache.hadoop.io.compress.SnappyCodec
+  HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check: "false"
+  HDFS_CONF_dfs_permissions_enabled: "false"
+  HDFS_CONF_dfs_webhdfs_enabled: "true"
+  ```
+  ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/hadoop-namenode.png)
+
+  
+
+ |Microsrvies| File location | Application name | port | Target port|
+ |-----------|---------------|------------------|------|------------|
+ |Apachi Hadoop Namenode|gcr.io/project1-327717/bde2020/hadoop-namenode|hadoop-namenode|9870|9870|
+ |Apachi Hadoop Namenode|gcr.io/project1-327717/bde2020/hadoop-namenode|hadoop-namenode|9000|9000|
+
+
+
  
+ 9. Deploy Apachi Hadoop Datanode just like step 7, but be sure to add the following environment variables:
  
- Namenode
- 
- Datanode:
+ Microsrvies| File location | Application name | 
+ |-----------|---------------|------------------|
+ |Apachi Hadoop Namenode|gcr.io/project1-327717/bde2020/hadoop-namenode|hadoop-namenode|
+
    ```
   CORE_CONF_fs_defaultFS: hdfs://hadoop-namenode-service:9000
   CORE_CONF_hadoop_http_staticuser_user: root
@@ -120,18 +143,26 @@ gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zo
   ```
 
 
+  * At the end, you will able to see all the imeges fully deployed and have services. Note: I am having difuculity with datanode.
+        ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/deployment.png)
 
-9. Test all the sevices by selecting the linkes as shown on the screenshot below. Save all the URLs for each sevice as we are going to use them in the next step:
-![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/services.png)
+10. Test all the sevices by selecting the linkes as shown on the screenshot below. Save all the URLs for each sevice as we are going to use them in the next step:
+![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/services1.png)
 
 10.Open the intrface image folder. Open  index.html and take the the saved URLs links and hard code them in index.html program as shown below(the folloing is just an example).
-    ```
-	<a href='http://104.154.54.98:50070/dfshealth.html#tab-overview'><button>Apache Hadoop</button></a>	
+   	 ```
+	<a href='http://34.67.17.72:9870/dfshealth.html#tab-overview'><button>Apache Hadoop</button></a>
+	
 	<a href='http://35.239.49.176:8080'><button>Apache Spark</button></a>	
+	
 	<a href='http://34.68.157.225:8888/login'><button>Jupyter Notbook</button></a>	
+	
 	<a href='http://34.134.78.251:9000/about'><button>SonarQube and SonarScanner</button></a>   
+	
+	 ```
+
   * Edit the HTML button that redirects to services page. 
-![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/Interface2.png)
+![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/interface3.png)
 
 11. build the image note that you will have to change the 'arenalyahya' to usre user ID.
 ```
@@ -172,7 +203,8 @@ docker build -t arenalyahya/html-interface:latest .
         ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/sonar3.png)
 
     * Apachi hadoop:
-       ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/hadoop.png)
+       ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/hadoop1.png)
+       ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/hadoop2.png)
 
     * Spark:
        ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/spark.png)
@@ -183,7 +215,7 @@ docker build -t arenalyahya/html-interface:latest .
 * https://www.dailysmarty.com/posts/steps-for-deploying-a-static-html-site-with-docker-and-nginx
 * https://github.com/jupyter/docker-stacks/issues/506
 * https://stackoverflow.com/questions/66063686/set-jupyter-lab-password-encrypted-with-sha-256
-
+* https://github.com/big-data-europe/docker-hadoop/blob/master/docker-compose.yml
 
       
 
