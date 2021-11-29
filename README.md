@@ -2,10 +2,11 @@
 
 ## Docker Images:
 1. [Jupiter Image](https://hub.docker.com/r/jupyter/scipy-notebook).
-2. [Apache Hadoop](https://hub.docker.com/r/harisekhon/hadoop).
-3. [Sonar Qube and Sonar Scanner](https://hub.docker.com/r/petronetto/sonarqube-alpine).
-4. [Spark](https://hub.docker.com/r/bitnami/spark).
-5. [Interface](https://hub.docker.com/r/arenalyahya/html-interface).
+2. [Apache Hadoop Namenode](https://hub.docker.com/r/bde2020/hadoop-namenode).
+3. [Apache Hadoop Datanode](https://hub.docker.com/r/bde2020/hadoop-datanode).
+4. [Sonar Qube and Sonar Scanner](https://hub.docker.com/r/petronetto/sonarqube-alpine).
+5. [Spark](https://hub.docker.com/r/bitnami/spark).
+6. [Interface](https://hub.docker.com/r/arenalyahya/html-interface).
 
 
 ## Steps  to run your Docker images on Kubernetes Engine:
@@ -25,11 +26,18 @@
     docker push gcr.io/<PROJECT_ID>/jupyter/scipy-notebook:latest
     ```
 
-    * Apachi hadoop:
+    * Apachi hadoop namenode:
+    
     ```
-    docker pull harisekhon/hadoop:latest
-    docker tag harisekhon/hadoop gcr.io/<PROJECT>harisekhon/hadoop:latest
-    docker push gcr.io/<PROJECT_ID>/harisekhon/hadoop:latest
+    docker pull bde2020/hadoop-namenode
+    docker tag bde2020/hadoop-namenode gcr.io/<PROJECT>/bde2020/hadoop-namenode
+    docker push gcr.io/<PROJECT_ID>/bde2020/hadoop-namenode
+    ```
+    * Apachi hadoop datanode:
+    ```
+    docker pull bde2020/hadoop-datanode
+    docker tag bde2020/hadoop-namenode gcr.io/<PROJECT>/bde2020/hadoop-datanode
+    docker push gcr.io/<PROJECT_ID>/bde2020/hadoop-datanode
     ```
 
     * Sonar Qube and Sonar Scanner:
@@ -71,11 +79,12 @@ gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zo
          |Microsrvies| File location | Application name | port | Target port|
          |-----------|---------------|------------------|------|------------|
          |Jupiter| gcr.io/project1-327717/jupyter/scipy-notebook|jupiter|8888|8888|
-         |Apachi Hadoop|gcr.io/project1-327717/harisekhon/hadoop|hadoop|50070|50070|
          |spark|gcr.io/project1-327717/bitnami/spark|spark|8080|8080|
-         |Sonar Qube and Sonar Scanner|gcr.io/project1-327717/petronetto/sonarqube-alpine|sonar|9000|9000
+         |Sonar Qube and Sonar Scanner|gcr.io/project1-327717/petronetto/sonarqube-alpine|sonar|9000|9000|
+         |Apachi Hadoop Namenode|gcr.io/project1-327717/bde2020/hadoop-namenode|hadoop-namenode|50070|50070|
+        
          
-        * At the end, you will able to see all the imeges fully deployed and have services.
+        * At the end, you will able to see all the imeges fully deployed and have services. -->change
         ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/6.png)
 
         
@@ -92,6 +101,26 @@ gcloud container clusters create --machine-type n1-standard-2 --num-nodes 3 --zo
   args: ["--NotebookApp.password='sha1:4e9c0a22901f:d54fb752d93d1ca5d2916d46f8758f43587eecaf'"]
   ```
   * This will allow us to log in by using the password ‘root’. 
+ 
+ 
+ 
+ Namenode
+ 
+ Datanode:
+   ```
+  CORE_CONF_fs_defaultFS: hdfs://hadoop-namenode-service:9000
+  CORE_CONF_hadoop_http_staticuser_user: root
+  CORE_CONF_hadoop_proxyuser_hue_groups: '*'
+  CORE_CONF_hadoop_proxyuser_hue_hosts: '*'
+  CORE_CONF_io_compression_codecs: org.apache.hadoop.io.compress.SnappyCodec
+  HDFS_CONF_dfs_namenode_datanode_registration_ip__hostname__check: "false"
+  HDFS_CONF_dfs_permissions_enabled: "false"
+  HDFS_CONF_dfs_webhdfs_enabled: "true"
+  SERVICE_PRECONDITION: hadoop-namenode-service:9000
+  ```
+
+
+
 9. Test all the sevices by selecting the linkes as shown on the screenshot below. Save all the URLs for each sevice as we are going to use them in the next step:
 ![alt text](https://github.com/ArenAlyahya/ProjectCheckpointOption1/blob/main/screenshots/services.png)
 
